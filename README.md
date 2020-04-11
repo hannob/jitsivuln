@@ -16,7 +16,9 @@ usage
 
 Needs Python 3.7 or above.
 
-who
----
+misc
+----
 
-Written by [Hanno Böck](https://hboeck.de/).
+Vulnerability was discovered by [joernchen](https://twitter.com/joernchen).
+
+Script written by [Hanno Böck](https://hboeck.de/).
