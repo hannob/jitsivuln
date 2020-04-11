@@ -20,3 +20,6 @@ misc
 Vulnerability was discovered by [joernchen](https://twitter.com/joernchen).
 
 Script written by [Hanno Böck](https://hboeck.de/).
+
+Background (in German):
+* [Golem.de: Unsichere Standardpasswörter in Jitsi Meet](https://www.golem.de/news/sicherheitsluecke-unsichere-standardpasswoerter-in-jitsi-meet-2004-147840.html)
