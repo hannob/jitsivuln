@@ -8,16 +8,17 @@ import xml.dom.minidom
 import base64
 import hashlib
 import hmac
-import sys
+import argparse
 
 
+parser = argparse.ArgumentParser()
+parser.add_argument("host", help="target hostname")
+parser.add_argument("-q", "--quiet", action="store_true",
+                    help="Only show detected hosts")
+args = parser.parse_args()
+
+TARGET = "https://%s/http-bind" % args.host
 PASSWORD = "passw0rd"
-
-if len(sys.argv) == 2:
-    TARGET = "https://%s/http-bind" % sys.argv[1]
-else:
-    print("Usage: %s [target]" % sys.argv[0])
-    sys.exit(1)
 
 try:
     req1 = "<body xmlns='http://jabber.org/protocol/httpbind' content='text/xml; charset=utf-8' hold='1' to='auth.meet.jitsi' wait='30' xml:lang='en' xmpp:version='1.0' ver='1.6' xmlns:xmpp='urn:xmpp:xbosh' rid='1' ack='1' />"
@@ -55,9 +56,11 @@ try:
 
     if '<success' in r.read().decode():
         print("%s vulnerable" % TARGET)
-    else:
+    elif not args.quiet:
         print("%s not vulnerable" % TARGET)
 except (urllib.error.HTTPError, urllib.error.URLError, http.client.RemoteDisconnected):
-    print("%s connection error, probably not vulnerable" % TARGET)
-except (IndexError):
-    print("%s parsing error" % TARGET)
+    if not args.quiet:
+        print("%s connection error, probably not vulnerable" % TARGET)
+except IndexError:
+    if not args.quiet:
+        print("%s parsing error" % TARGET)
