@@ -19,26 +19,19 @@ else:
     sys.exit(1)
 
 req1 = "<body xmlns='http://jabber.org/protocol/httpbind' content='text/xml; charset=utf-8' hold='1' to='auth.meet.jitsi' wait='30' xml:lang='en' xmpp:version='1.0' ver='1.6' xmlns:xmpp='urn:xmpp:xbosh' rid='1' ack='1' />"
-
-
 r = urllib.request.urlopen(url=TARGET, data=req1.encode())
-
 xml1 = xml.dom.minidom.parseString(r.read())
-
 sid = xml1.getElementsByTagName('body')[0].getAttribute('sid')
 
 b64 = base64.b64encode('n,,n=focus,r=nonce'.encode())
 initialmessage = "n=focus,r=nonce"
 
 req2 = "<body rid='2' sid='%s' xmlns='http://jabber.org/protocol/httpbind'><auth xmlns='urn:ietf:params:xml:ns:xmpp-sasl' mechanism='SCRAM-SHA-1'>%s</auth></body>" % (sid, b64.decode())
-
 r = urllib.request.urlopen(url=TARGET, data=req2.encode())
 xml1 = xml.dom.minidom.parseString(r.read())
 
 serverfirstmessage = base64.b64decode(xml1.getElementsByTagName('challenge')[0].firstChild.nodeValue).decode()
-
 challenge = serverfirstmessage.split(',')
-
 servernonce = challenge[0].split("=")[1]
 salt = base64.b64decode(challenge[1].split("=")[1])
 iterations = int(challenge[2].split("=")[1])
@@ -55,9 +48,7 @@ serversignature = hmac.new(serverkey, authmessage.encode(), hashlib.sha1).digest
 clientfinalmessage = "%s,p=%s" % (clientfinalbaremessage, base64.b64encode(clientproof).decode())
 
 b64 = base64.b64encode(clientfinalmessage.encode())
-
 req3 = "<body rid='3' sid='%s' xmlns='http://jabber.org/protocol/httpbind'><response xmlns='urn:ietf:params:xml:ns:xmpp-sasl'>%s</response></body>" % (sid, b64.decode())
-
 r = urllib.request.urlopen(url=TARGET, data=req3.encode())
 
 if '<success' in r.read().decode():
