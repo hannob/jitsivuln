@@ -61,6 +61,6 @@ try:
 except (urllib.error.HTTPError, urllib.error.URLError, http.client.RemoteDisconnected):
     if not args.quiet:
         print("%s connection error, probably not vulnerable" % TARGET)
-except IndexError:
+except (IndexError, xml.parsers.expat.ExpatError):
     if not args.quiet:
         print("%s parsing error" % TARGET)
