@@ -1,7 +1,7 @@
 jitsivuln
 =========
 
-Quick and dirty script to scan for Jitsi Meet instances with default
+Quick and dirty Python script to scan for Jitsi Meet instances with default
 XMPP accounts with the password "passw0rd".
 
 See the "Important security notice" here:
@@ -13,8 +13,6 @@ usage
 ```
 ./jitsivuln [hostname]
 ```
-
-Needs Python 3.7 or above.
 
 misc
 ----
